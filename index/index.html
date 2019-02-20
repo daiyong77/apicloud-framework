@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/common.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+    <div class="blank20"></div>
+    <ul class="nav">
+        <li tapmode="active" onclick="openWin(this)" data-title="本地打开带头部" data-url="index/list.html"><span>本地打开带头部</span><i class="back"></i></li>
+        <li tapmode="active" onclick="openWin(this)" data-title="本地带20px头部" data-base="header_top_20px.html" data-url="index/list.html"><span>本地带20px头部</span><i class="back"></i></li>
+        <li tapmode="active" onclick="openWin(this)" data-title="本地打开不带头部" data-base="header_none.html" data-url="index/list.html"><span>本地打开不带头部</span><i class="back"></i></li>
+        <li tapmode="active" onclick="openWin(this)" data-title="打开远程链接" data-url="https://m.sohu.com"><span>打开远程链接</span><i class="back"></i></li>
+    </ul>
+    <ul class="nav">
+        <li tapmode="active" onclick="openWin(this)" data-title="本地打开带头部plus" data-name="plus" data-url="{'互联网':'index/list.html?type=1','科技':'index/list.html?type=2','娱乐':'index/list.html?type=3'}"><span>本地打开带头部plus</span><i class="back"></i></li>
+    </ul>
+
+    <script src="../static/js/api.js"></script>
+    <script src="../static/js/jquery3.js"></script>
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/common.js"></script>
+    <script src="config.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+
+        };
+    </script>
+</body>
+
+</html>

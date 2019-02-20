@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>openwin带头部的框</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/box.css">
+</head>
+
+<body>
+    <header>
+        <ul>
+            <li>
+                <div class="left back" onclick="historyBack()" tapmode>
+                    <i></i>
+                    <span>返回</span>
+                </div>
+                <div class="left back http-close" onclick="api.closeWin()" tapmode>
+                    <span>关闭</span>
+                </div>
+                <div class="center http-center J_title">&nbsp;</div>
+                <div class="right out" onclick="sharePage()"><i></i></div>
+            </li>
+        </ul>
+    </header>
+    <section>
+        <div class="gateway-error hide J_gatwyerror">
+            <a href="javascript:;">
+              网络无法连接，请检查网络配置
+              <br/>
+              点击重新载入
+            </a>
+        </div>
+    </section>
+    <script src="static/js/api.js"></script>
+    <script src="static/js/jquery3.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            //参数设置
+            var frame_header = $api.fixStatusBar($api.dom('header'));
+            //app顶部
+            var version = api.systemVersion.split('.');
+            if (api.systemType == 'android' && version[0] * 1 < 6) {
+                $('header').css('background', '#000'); //小于6.0安卓顶部默认全黑色
+                api.setStatusBarStyle({
+                    style: 'light', //支持Android6.0及以上手机。<!-- light白色dark黑色 -->
+                    animated: false
+                });
+            }else{
+                api.setStatusBarStyle({
+                    style: 'dark', //支持Android6.0及以上手机。<!-- light白色dark黑色 -->
+                    color:'#fff',
+                    animated: false
+                });
+            }
+
+            //安卓返回按钮
+            api.addEventListener({
+                name: 'keyback'
+            }, function(ret, err) {
+                api.execScript({
+                    frameName: 'openhttp',
+                    script: 'api.historyBack(function(ret, err){if (ret.status){} else {api.closeWin();}});'
+                });
+            });
+            //下拉显示谁提供的网页
+            api.openFrame({
+                name: 'openhttp_author',
+                url: 'widget://header_http_url.html',
+                rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+                    marginTop: frame_header, // main页面距离win顶部的高度
+                    marginBottom: 0, // main页面距离win底部的高度
+                    w: 'auto' // main页面的宽度 自适应屏幕宽度
+                },
+            });
+            //打开窗口
+            api.openFrame({
+                name: 'openhttp',
+                url: api.pageParam.url,
+                bounces: true,
+                scrollToTop: true, //点击顶部滚动到顶部(ios)
+                useWKWebView: true, //使用WKWebView来加载页面来加载页面(ios8以上)
+                historyGestureEnabled: true, //useWKWebView为true时手势前进后退(ios8以上)
+                allowEdit: true, //长按页面弹出选择信息
+                bgColor: 'rgba(0,0,0,0)',
+                progress: {
+                    type: "page", //default|page
+                    // title: "加载中", //type为default时显示的加载框标题
+                    // text: "请稍后...", //type为default时显示的加载框内容
+                },
+                rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+                    marginTop: frame_header, // main页面距离win顶部的高度
+                    marginBottom: 0, // main页面距离win底部的高度
+                    w: 'auto' // main页面的宽度 自适应屏幕宽度
+                }
+            });
+            //注入js实时广播载入状态
+            var http_body_background = "try {if(/^rgba\\(\\d+, \\d+, \\d+, 0\\)/.test(window.getComputedStyle(document.getElementsByTagName('body')[0]).background)){document.getElementsByTagName('body')[0].style.backgroundColor='#fff'}} catch (e) {};";//如果没有背景则默认填充白色
+            var http_body_info_1 = "try {console.log=function(){};api.sendEvent({name: 'openhttp_listener',extra: {title: document.getElementsByTagName('title')[0].innerHTML,url:document.location.href,";//广播载入页面的标题
+            api.setFrameClient({
+                frameName: 'openhttp'
+            }, function(ret, err) {
+                var http_body_info = http_body_info_1 + "status:" + ret.state + "}})} catch (e) {};";
+                //0-开始加载；1-加载进度发生变化；2-结束加载；3-title发生变化；4-url发生变化
+                if (ret.state == 2 || ret.state == 3 || ret.state == 4) {
+                    //执行js 监听页面信息(页面title与url)
+                    api.execScript({
+                        frameName: 'openhttp',
+                        script: http_body_info
+                    });
+                }
+                if (ret.state == 2) {
+                    //执行js 判断body背景是不是透明如果透明则改为白色背景(避免可以在不拉动的状态下看到由XXX提供的网页)
+                    api.execScript({
+                        frameName: 'openhttp',
+                        script: http_body_background
+                    });
+                }
+            });
+            //监听网页信息
+            api.addEventListener({
+                name: 'openhttp_listener'
+            }, function(ret, err) {
+                $('.J_title').html(ret.value.title);
+            });
+
+          //分享页面
+
+              var sharedModule= api.require('shareAction');
+              api.addEventListener({
+                  name: 'openhttp_listener_page'
+              }, function(ret, err) {
+                  if (ret && ret.value) {
+                      sharedModule.share({
+                          text: ret.value.title,
+                          type: 'url',
+                          path: ret.value.url,
+                      });
+                  }
+              });
+
+        }
+
+        function historyBack() {
+            api.execScript({
+                frameName: 'openhttp',
+                script: 'api.historyBack(function(ret, err){if (ret.status){} else {api.closeWin();}});'
+            });
+        }
+        //执行分享页面信息
+        function sharePage(){
+            var script = "api.sendEvent({name: 'openhttp_listener_page', extra: {url: window.location.href,title:document.getElementsByTagName('title')[0].innerHTML}});";
+            api.execScript({
+                frameName: 'openhttp',
+                script: script
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>信息</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/common.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+    <div class="blank10"></div>
+    <ul class="box" id="VUE_data" v-cloak>
+        <li>{{data.title}}</li>
+        <li v-html="data.body"></li>
+    </ul>
+    <script src="../static/js/api.js"></script>
+    <script src="../static/js/jquery3.js"></script>
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/common.js"></script>
+    <script src="config.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var VUE_data;
+            var id = get('id');
+            loadData('body.php?id=' + decodeURIComponent(id), function(data, referer) {
+                if (!VUE_data) {
+                    VUE_data = new Vue({
+                        el: '#VUE_data',
+                        data: {
+                            data: data.data
+                        }
+                    });
+                } else {
+                    VUE_data.data = data.data;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

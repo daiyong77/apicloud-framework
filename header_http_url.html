@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/box.css">
+</head>
+
+<body class="header-http-url">
+    <div id="J_display">正在载入...</div>
+    <script src="static/js/api.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var url_history = '';
+            api.addEventListener({
+                name: 'openhttp_listener'
+            }, function(ret, err) {
+                var match = ret.value.url.match(/^http(|s):\/\/(.*?)(\/|$)/);
+                if (url_history == '' || url_history != ret.value.url) {
+                    url_history = ret.value.url;
+                    console.log('远程网页链接:' + ret.value.url);
+                }
+                if (match[2]) {
+                    document.getElementById('J_display').innerHTML = '此网页由' + match[2] + '提供';
+                } else {
+                    document.getElementById('J_display').innerHTML = '正在载入...';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

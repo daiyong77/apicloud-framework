@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>列表</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/common.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+    <div class="blank10"></div>
+    <div id="VUE_list" v-cloak>
+        <ul class="list">
+            <li v-for="fi in list" tapmode="active" onclick="openWin(this)" data-title="详细内容" :data-url="'index/body.html?id='+encodeURIComponent(encodeURIComponent(fi.id))">
+                <div class="ov" v-if="fi.images.length==3">
+                    <img v-for="fi2 in fi.images" :src="fi2" style="width:calc(33% - 2.2px)">
+                </div>
+                <div class="ov" v-if="fi.images.length==2">
+                    <img v-for="fi2 in fi.images" :src="fi2" style="width:calc(50% - 2.5px)">
+                </div>
+                <div class="ov" v-if="fi.images.length==1">
+                    <img v-for="fi2 in fi.images" :src="fi2" style="width:100%">
+                </div>
+                <dl>
+                    <dd>{{fi.title}}</dd>
+                    <dd v-if="fi.description">{{fi.description}}</dd>
+                    <dd>更新时间:{{fi.time}}</dd>
+                    <dd>提供者:{{fi.id}}</dd>
+                </dl>
+            </li>
+        </ul>
+        <div class="list-tip" v-if="list.length==0">暂无数据</div>
+    </div>
+    <script src="../static/js/api.js"></script>
+    <script src="../static/js/jquery3.js"></script>
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/common.js"></script>
+    <script src="config.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var VUE_list;
+            var type = get('type');
+            loadData('list.php?type=' + type, function(data, referer) {
+                if (!VUE_list) {
+                    VUE_list = new Vue({
+                        el: '#VUE_list',
+                        data: {
+                            list: data.data
+                        }
+                    });
+                } else {
+                    VUE_list.list = data.data;
+                }
+                api.parseTapmode();
+            }, function(data) {
+                VUE_list.list = VUE_list.list.concat(data.data);
+                api.parseTapmode();
+            });
+        }
+    </script>
+</body>
+
+</html>

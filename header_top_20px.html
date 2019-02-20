@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>openwin不带头部框</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/box.css">
+</head>
+
+<body>
+    <header>
+        <ul>
+            <li style="height:1px;">
+                <div class="center">&nbsp;</div>
+            </li>
+        </ul>
+    </header>
+    <script src="static/js/api.js"></script>
+    <script src="static/js/jquery3.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            //app顶部
+            var version = api.systemVersion.split('.');
+            if (api.systemType == 'android' && version[0] * 1 < 6) {
+                $('header').css('background', '#000'); //小于6.0安卓顶部默认全黑色
+                api.setStatusBarStyle({
+                    style: 'light', //支持Android6.0及以上手机。<!-- light白色dark黑色 -->
+                    animated: false
+                });
+            } else {
+                api.setStatusBarStyle({
+                    style: 'dark', //支持Android6.0及以上手机。<!-- light白色dark黑色 -->
+                    color: '#fff',
+                    animated: false
+                });
+            }
+            //设置title
+            $('.J_title').html(api.pageParam.title);
+            //打开窗口
+            var frame_header = $api.fixStatusBar($api.dom('header'));
+            console.log('widget://' + api.pageParam.url);
+            api.openFrame({
+                name: 'page',
+                url: 'widget://' + api.pageParam.url,
+                bounces: true,
+                scrollToTop: true, //点击顶部滚动到顶部(ios)
+                useWKWebView: true, //使用WKWebView来加载页面来加载页面(ios8以上)
+                rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+                    marginTop: frame_header, // main页面距离win顶部的高度
+                    marginBottom: 0, // main页面距离win底部的高度
+                    w: 'auto' // main页面的宽度 自适应屏幕宽度
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

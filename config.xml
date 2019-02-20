@@ -1,0 +1,42 @@
+<widget id="A6060279126484" version="0.0.1">
+    <name>frame</name>
+    <description>
+        frame
+    </description>
+    <author email="1031850847@qq.com" href="http://www.daiyong77.com">
+        frame
+    </author>
+    <content src="test.html"/>
+    <access origin="*"/>
+    <!-- 页面是否弹动 -->
+    <preference name="pageBounce" value="false"/>
+    <preference name="appBackground" value="rgba(245,245,245,1)"/>
+    <preference name="windowBackground" value="rgba(245,245,245,1)"/>
+    <preference name="frameBackgroundColor" value="rgba(245,245,245,1)"/>
+    <!-- 默认是否显示横向滚动条  -->
+    <preference name="hScrollBarEnabled" value="false"/>
+    <!-- 默认是否显示竖直滚动条  -->
+    <preference name="vScrollBarEnabled" value="true"/>
+    <!-- 启动页是否自动隐藏 -->
+    <preference name="autoLaunch" value="true"/>
+    <!-- 配置应用是否全屏运行 云编译有效 -->
+    <preference name="fullScreen" value="false"/>
+    <!-- 自动检测更新 -->
+    <preference name="autoUpdate" value="true"/>
+    <!-- 增量更新、云修复 -->
+    <preference name="smartUpdate" value="true"/>
+    <!-- 错误显示 -->
+    <preference name="debug" value="true"/>
+    <!-- 配置状态栏和页面是否重合（沉浸式效果） -->
+    <preference name="statusBarAppearance" value="true"/>
+
+    <permission name="readPhoneState"/>
+    <permission name="camera"/>
+    <permission name="record"/>
+    <permission name="location"/>
+    <permission name="fileSystem"/>
+    <permission name="internet"/>
+    <permission name="bootCompleted"/>
+    <permission name="hardware"/>
+
+</widget>

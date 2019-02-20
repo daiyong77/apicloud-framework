@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/box.css">
+</head>
+
+<body>
+    <header>
+        <ul>
+            <li>
+                <div class="left"></div>
+                <div class="center">默认</div>
+                <div class="right"></div>
+            </li>
+            <li class="hide" data-top='top'>
+                <!--有20px(安卓25px)顶部-->
+                <div class="center">&nbsp;</div>
+            </li>
+            <li class="hide" data-top="none">
+                <!--无顶部-->
+                <div class="center">&nbsp;</div>
+            </li>
+            <li class="hide" data-topColor="#ff0000" data-barStyle="light">
+                <!--自定义颜色-->
+                <!-- light白色dark黑色 -->
+                <div class="center" style="color:#fff">自定义颜色</div>
+            </li>
+            <li class="hide" data-pageCount="5">
+                <!-- 每页显示多少个不填则填充整页 -->
+                <div class="center">plus</div>
+                <div class="plus swiper-container">
+                    <div class="swiper-wrapper">
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=0" class="current swiper-slide">推荐</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=1" class="swiper-slide">互联网</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=2" class="swiper-slide">科技</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=3" class="swiper-slide">娱乐</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=4" class="swiper-slide">财经</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=5" class="swiper-slide">国际</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=6" class="swiper-slide">军事</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=7" class="swiper-slide">体育</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=8" class="swiper-slide">社会</span>
+                        <span tapmode onclick="swiper(this)" data-url="index/list.html?type=9" class="swiper-slide">国内</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </header>
+    <footer>
+        <ul>
+            <li tapmode onclick="changeTab(this)" class="current" data-url="index/index.html">
+                <a href="javascript:;">
+                    <i></i>
+                    <span>默认</span>
+                </a>
+            </li>
+            <li tapmode onclick="changeTab(this)" data-url="index/edit.html">
+                <a href="javascript:;">
+                    <i></i>
+                    <span>自定义颜色</span>
+                </a>
+            </li>
+            <li tapmode onclick="changeTab(this)" data-url="index/list.html">
+                <a href="javascript:;">
+                    <i></i>
+                    <span>全屏</span>
+                </a>
+            </li>
+            <li tapmode onclick="changeTab(this)" data-url="index/index.html">
+                <!-- 可以远程链接https://m.sohu.com/ -->
+                <a href="javascript:;">
+                    <i></i>
+                    <span>顶部20px</span>
+                </a>
+            </li>
+            <li tapmode onclick="changeTab(this)">
+                <a href="javascript:;">
+                    <i></i>
+                    <span>plus</span>
+                </a>
+            </li>
+        </ul>
+    </footer>
+    <script src="static/js/api.js"></script>
+    <script src="static/js/jquery3.js"></script>
+    <link rel="stylesheet" href="static/libs/swiper/swiper.css">
+    <script src="static/libs/swiper/swiper.js"></script>
+    <script type="text/javascript">
+        var defaultBarStyle = 'dark' //默认顶部状态栏信息字体颜色<!-- light白色dark黑色 -->
+        var defaultBarBackground = '#fff'; //顶部状态栏背景颜色
+        apiready = function() {
+            changeTab(0);
+            //监听关闭事件修改顶部状态颜色
+            api.addEventListener({
+                name: 'viewappear'
+            }, function(ret, err) {
+                $('header ul li').each(function(index) {
+                    if ($(this).css('display') != 'none') {
+                        var barStyle = $(this).attr('data-barStyle');
+                        var color = $(this).attr('data-topColor');
+                        var version = api.systemVersion.split('.');
+                        if (api.systemType == 'android' && version[0] * 1 >= 6) {
+                            api.setStatusBarStyle({
+                                style: barStyle?barStyle:defaultBarStyle, //状态栏字体颜色
+                                color: color?color:defaultBarBackground,  //安卓6.0以上顶部状态栏背景颜色
+                            });
+                        } else {
+                            api.setStatusBarStyle({
+                                style: barStyle?barStyle:defaultBarStyle, //状态栏字体颜色
+                            });
+                        }
+                        return false;
+                    }
+                })
+            });
+        }
+
+        function changeTab(footer) {
+            //参数
+            if (!isNaN(footer)) {
+                footer = $('footer ul li').eq(footer);
+            } else {
+                footer = $(footer);
+            }
+            var index = $('footer ul li').index(footer);
+            var header = $('header ul li').eq(index);
+            var version = api.systemVersion.split('.');
+            //样式变更
+            footer.addClass('current').siblings().removeClass('current');
+            header.show().siblings().hide();
+            if (header.attr('data-top') == 'top') {
+                header.height('1px');
+            }
+            //修改顶部背景颜色
+            var color = header.attr('data-topColor');
+            if (api.systemType == 'android' && version[0] * 1 < 6) {
+                $('header').css('background', '#000'); //小于6.0安卓顶部默认全黑色
+            }else{
+                $('header').css('background', color?color:defaultBarBackground); //顶部状态栏背景颜色
+            }
+            header.css('background', color?color:defaultBarBackground); //顶部状态栏背景颜色
+            //顶部字体颜色
+            var barStyle = header.attr('data-barStyle');
+            if (api.systemType == 'android' && version[0] * 1 >= 6) {
+                api.setStatusBarStyle({
+                    style: barStyle?barStyle:defaultBarStyle, //状态栏字体颜色
+                    color: color?color:defaultBarBackground,  //安卓6.0以上顶部状态栏背景颜色
+                    animated: false
+                });
+            } else {
+                api.setStatusBarStyle({
+                    style: barStyle?barStyle:defaultBarStyle, //状态栏字体颜色
+                    animated: false
+                });
+            }
+            //打开frame计算距离与长度
+            var frame_header = $api.fixStatusBar($api.dom('header'));
+            var frame_footer = $api.fixTabBar($api.dom('footer'));
+            if (header.attr('data-top') == 'none') {
+                if (api.systemType == 'android') {
+                    header.css('height', '0px');
+                    frame_header = $api.fixStatusBar($api.dom('header'));
+                } else {
+                    frame_header = 0;
+                }
+            }
+            var url = footer.attr('data-url');
+            //关闭frame(没有如果点击的是当前frame则直接结束)
+            $('footer ul li').each(function(index_close) {
+                if (index_close == index) return true;
+                api.setFrameAttr({
+                    name: 'index_' + index_close,
+                    hidden: true
+                });
+                api.setFrameGroupAttr({
+                    name: 'index_' + index_close,
+                    hidden: true
+                })
+            });
+            //判断当前frame是否已经打开了
+            if (footer.attr('data-show') == 'true') {
+                api.setFrameAttr({
+                    name: 'index_' + index,
+                    hidden: false
+                });
+                api.setFrameGroupAttr({
+                    name: 'index_' + index,
+                    hidden: false
+                });
+                console.log(footer.attr('data-urlconsole'));
+                return true;
+            }
+            if (url) {
+                var json = {
+                    name: 'index_' + index,
+                    bounces: true,
+                    rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+                        marginTop: frame_header, // main页面距离win顶部的高度
+                        marginBottom: frame_footer, // main页面距离win底部的高度
+                        w: 'auto' // main页面的宽度 自适应屏幕宽度
+                    }
+                };
+                if (!/^http(|s):\/\//.test(url)) {
+                    json.url = 'widget://' + url;
+                    console.log(json.url);
+                    footer.attr('data-urlconsole', json.url);
+                } else { //打开网页
+                    json.url = url;
+                    json.historyGestureEnabled = true; //useWKWebView为true时手势前进后退(ios8以上)
+                    json.allowEdit = true; //长按页面弹出选择信息
+                    json.progress = {
+                        type: "page", //default|page
+                        // title: "加载中", //type为default时显示的加载框标题
+                        // text: "请稍后...", //type为default时显示的加载框内容
+                    }
+                    console.log('远程网页链接' + json.url);
+                    footer.attr('data-urlconsole', '远程网页链接' + json.url);
+                }
+                api.openFrame(json);
+            } else {
+                var pageCount = header.attr('data-pageCount');
+                if (!pageCount) pageCount = header.find('.swiper-container .swiper-slide').length;
+                var swiper = new Swiper('.swiper-container', {
+                    slidesPerView: pageCount,
+                    spaceBetween: 0,
+                    freeMode: true,
+                });
+                //获取页面个数
+                var frame_page = [];
+                header.find('.swiper-container .swiper-slide').each(function(page_index) {
+                    frame_page.push({
+                        name: 'framepage_' + page_index,
+                        url: 'widget://' + $(this).attr('data-url'),
+                        bounces: true,
+                    });
+                });
+                //打开页面
+                footer.attr('data-urlconsole', 'frameGroup');
+                console.log('frameGroup');
+                api.openFrameGroup({
+                    name: 'index_' + index,
+                    index: 0, //默认显示第一个
+                    rect: { // 推荐使用Margin布局，用于适配屏幕的动态变化
+                        marginTop: frame_header, // main页面距离win顶部的高度
+                        marginBottom: frame_footer, // main页面距离win底部的高度
+                        w: 'auto' // main页面的宽度 自适应屏幕宽度
+                    },
+                    frames: frame_page
+                }, function(ret, err) {
+                    swiper.slideTo(ret.index);
+                    console.log(frame_page[ret.index].url);
+                    header.find('.swiper-container .swiper-slide').eq(ret.index).addClass('current').siblings().removeClass('current');
+                });
+            }
+            footer.attr('data-show', 'true');
+        }
+
+        function swiper(nav) {
+            $(nav).addClass('current').siblings().removeClass('current');
+            var index = $('header ul li').index($(nav).parents('li'));
+            var index_page = $(nav).index();
+            api.setFrameGroupIndex({
+                name: 'index_' + index,
+                index: index_page,
+                scroll: true,
+            });
+        }
+    </script>
+</body>
+
+</html>

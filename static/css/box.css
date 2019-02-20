@@ -1,0 +1,59 @@
+/*css*/
+html{-webkit-tap-highlight-color: transparent;} /*手机端点击后背景无阴影*/
+body,ul,ol,dl,dd,p{margin: 0px; padding: 0px;}
+input,select{outline:none;}
+select{-webkit-appearance: none;}/*手机中不要出现下拉箭头*/
+li{ list-style: none}
+a{ text-decoration: none;}
+/*a:hover{ text-decoration: underline; }*/
+a:hover{ text-decoration: none; }
+
+.fl{float: left;}
+.fr{float: right;}
+.hide{ display: none}
+.ov{ overflow: hidden;}
+.blank10{ height: 10px; overflow: hidden; }
+.blank20{ height: 20px; overflow: hidden;}
+[v-cloak] {display: none;}
+
+html{font-size: 16px;}
+body{ background: #fff }
+
+/*无网络时的加载样式*/
+.S_gateway-error{ text-align: center; margin-top:30px; color: #666;font-size: 14px; line-height: 32px;}
+.S_gateway-error a{ display: block; color: #666}
+.S_gateway-error a:active{ color: red}
+/*主框*/
+header li{position: relative; background: #fff; overflow: hidden;}
+header li:after {position: absolute;content: '';width: 100%;left: 0;bottom: 0;height: 1px;background-color: #e5e5e5;-webkit-transform: scale(1,0.5);transform: scale(1,0.5);-webkit-transform-origin: center bottom;transform-origin: center bottom}
+header .center{font-size:16px; text-align: center; width: calc(100% - 120px); margin:0 auto; line-height: 45px; height:44px; overflow: hidden;}
+header .left{ position: absolute; left:0px;top:0px;width: 60px; height: 44px;}
+header .left.back i{ display: block; float: left;width: 16px; margin-left: 5px;height: 44px;background: url(../images/box_back.png) center center no-repeat;background-size: 100%; }
+header .left.back span{ font-size: 16px; float: left;width: 34px; height: 44px; line-height: 45px;}
+header .right{ position: absolute; right:0px;top:0px;width: 55px; height: 44px;}
+header .right.out i{display: block; float: right;width: 16px; margin-right:10px; height: 44px; background: url(../images/box_out.png) center center no-repeat;background-size: 100%;}
+header .plus{ height:38px;position:relative;}
+header .plus span{ font-size: 14px;text-align: center;height:38px; line-height: 38px; float: left}
+header .plus span.current{ height: 36px;border-bottom: 2px solid #df2530; color: #df2530}
+header .plus:before {position: absolute;content: '';width: 100%;left: 0;top: 0;height: 1px;background-color: #e5e5e5;-webkit-transform: scale(1,.5);transform: scale(1,.5);-webkit-transform-origin: center top;transform-origin: center top}
+footer{ background: #fff; height:45px; overflow: hidden;width: 100%; position:absolute;bottom: 0px; left: 0px;}
+footer:after{position: absolute;content: '';width: 100%;left: 0;top: 0px;height: 1px;background-color: #e5e5e5;-webkit-transform: scale(1,.5);transform: scale(1,.5);-webkit-transform-origin: center top;transform-origin: center top}
+footer li{ width: 20%; float: left; text-align: center; }
+footer li a{ width: 100%; height: 45px; display: block; }
+footer li a i{ display: block; width: 24px; height: 24px;margin:0 auto; margin-top:2px;background: url(../images/box_bottom.png);}
+footer li a span{display:block; height: 16px; margin-top:2px; line-height: 16px; text-align: center; display: block; font-size: 10px; color: #929292 }
+footer li:nth-child(1) i{ background-position: 0px 0px; background-size: 500%;}
+footer li:nth-child(2) i{background-position: -24px 0px; background-size: 500%;}
+footer li:nth-child(3) i{background-position: -48px 0px; background-size: 500%;}
+footer li:nth-child(4) i{ background-position: -72px 0px; background-size: 500%;}
+footer li:nth-child(5) i{ background-position: -96px 0px; background-size: 500%;}
+footer li:nth-child(1).current i{background-position: 0px -24px; background-size: 500%;}
+footer li:nth-child(2).current i{background-position:-24px -24px; background-size: 500%;}
+footer li:nth-child(3).current i{background-position:-48px -24px; background-size: 500%;}
+footer li:nth-child(4).current i{background-position: -72px -24px; background-size: 500%;}
+footer li:nth-child(5).current i{background-position:-96px -24px; background-size: 500%;}
+footer li.current span{ color: #25b1ff}
+/*其他特定样式*/
+body.header-http-url{background:none; text-align: center; color: #666; padding:20px 0px; font-size: 12px;}
+header li .http-close{left:55px;}
+header li .http-center{width:calc(100% - 55px - 34px - 55px - 34px);}

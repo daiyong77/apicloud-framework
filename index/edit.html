@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="static/css/common.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+    <div class="blank20"></div>
+    <div class="edit">
+        <dl>
+            <dt>请输入</dt>
+            <dd><input name="input" type="text" placeholder="请输入"></dd>
+        </dl>
+        <dl>
+            <dt>请选择</dt>
+            <dd>
+                <select name="select">
+                    <option value="">--请选择--</option>
+                    <option value="1">选择1</option>
+                </select>
+            </dd>
+        </dl>
+        <dl>
+            <dt>选择按钮</dt>
+            <dd>
+                <div class="C_switch fr">
+                    <input id="checkbox1" type="checkbox" />
+                    <label for="checkbox1"></label>
+                </div>
+            </dd>
+        </dl>
+    </div>
+    <ul class="box" id="VUE_sys" v-cloak>
+        <li>应用版本:{{appVersion}}</li>
+        <li>系统版本号:{{systemVersion}}</li>
+    </ul>
+    <script src="../static/js/api.js"></script>
+    <script src="../static/js/jquery3.js"></script>
+    <script src="../static/js/vue.js"></script>
+    <script src="../static/js/common.js"></script>
+    <script src="config.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var VUE_sys = new Vue({
+                el: '#VUE_sys',
+                data: {
+                    systemVersion: api.systemType + ' ' + api.systemVersion, //系统版本号
+                    appVersion: api.appVersion, //应用版本
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
